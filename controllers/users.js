@@ -24,7 +24,6 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.getUsers = (req, res, next) => User.find({})
-  .orFail(new NotFoundError('Пользователи не найдены'))
   .then((users) => res.status(codes.SUCCESS_OK_CODE).send({ data: users }))
   .catch(next);
 
@@ -34,7 +33,15 @@ module.exports.getUser = (req, res, next) => {
   return User.findById(id)
     .orFail(new NotFoundError(`Пользователь с id ${id} не найден`))
     .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ data: user }))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(
+          new BadRequestError('Невалидный id'),
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.updateProfile = (req, res, next) => User.findByIdAndUpdate(
@@ -43,8 +50,9 @@ module.exports.updateProfile = (req, res, next) => User.findByIdAndUpdate(
     name: req.body.name,
     about: req.body.about,
   },
-  { new: true },
+  { new: true, runValidators: true },
 )
+  .orFail(new NotFoundError(`Пользователь с id ${req.user._id} не найден`))
   .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ data: user }))
   .catch((err) => {
     if (err.name === 'ValidationError') {
@@ -55,8 +63,6 @@ module.exports.updateProfile = (req, res, next) => User.findByIdAndUpdate(
             .join(', ')}`,
         ),
       );
-    } else if (err.name === 'DocumentNotFoundError') {
-      next(new NotFoundError(`Пользователь с id ${req.user._id} не найден`));
     } else {
       next();
     }
@@ -67,8 +73,9 @@ module.exports.updateAvatar = (req, res, next) => User.findByIdAndUpdate(
   {
     avatar: req.body.avatar,
   },
-  { new: true },
+  { new: true, runValidators: true },
 )
+  .orFail(new NotFoundError(`Пользователь с id ${req.user._id} не найден`))
   .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ data: user }))
   .catch((err) => {
     if (err.name === 'ValidationError') {
@@ -79,8 +86,6 @@ module.exports.updateAvatar = (req, res, next) => User.findByIdAndUpdate(
             .join(', ')}`,
         ),
       );
-    } else if (err.name === 'DocumentNotFoundError') {
-      next(new NotFoundError(`Пользователь с id ${req.user._id} не найден`));
     } else {
       next();
     }

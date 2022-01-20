@@ -25,7 +25,6 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.getCards = (req, res, next) => Card.find({})
-  .orFail(new NotFoundError('Карточки не найдены'))
   .then((cards) => res.status(codes.SUCCESS_OK_CODE).send({ data: cards }))
   .catch(next);
 
@@ -34,7 +33,15 @@ module.exports.deleteCard = (req, res, next) => {
   return Card.findByIdAndRemove(id)
     .orFail(new NotFoundError(`Карточка с id ${id} не найдена`))
     .then((card) => res.status(codes.SUCCESS_OK_CODE).send({ data: card }))
-    .catch(next);
+    .catch((err) => {
+      if (err.name === 'CastError') {
+        next(
+          new BadRequestError('Невалидный id'),
+        );
+      } else {
+        next(err);
+      }
+    });
 };
 
 module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
@@ -53,8 +60,12 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
             .join(', ')}`,
         ),
       );
+    } else if (err.name === 'CastError') {
+      next(
+        new BadRequestError('Невалидный id'),
+      );
     } else {
-      next(err);
+      next();
     }
   });
 
@@ -74,7 +85,11 @@ module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
             .join(', ')}`,
         ),
       );
+    } else if (err.name === 'CastError') {
+      next(
+        new BadRequestError('Невалидный id'),
+      );
     } else {
-      next(err);
+      next();
     }
   });
