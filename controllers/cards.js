@@ -19,7 +19,7 @@ module.exports.createCard = (req, res, next) => {
           ),
         );
       } else {
-        next();
+        next(err);
       }
     });
 };
@@ -65,7 +65,7 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
         new BadRequestError('Невалидный id'),
       );
     } else {
-      next();
+      next(err);
     }
   });
 
@@ -90,6 +90,6 @@ module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
         new BadRequestError('Невалидный id'),
       );
     } else {
-      next();
+      next(err);
     }
   });

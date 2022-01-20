@@ -18,7 +18,7 @@ module.exports.createUser = (req, res, next) => {
           ),
         );
       } else {
-        next();
+        next(err);
       }
     });
 };
@@ -64,7 +64,7 @@ module.exports.updateProfile = (req, res, next) => User.findByIdAndUpdate(
         ),
       );
     } else {
-      next();
+      next(err);
     }
   });
 
@@ -87,6 +87,6 @@ module.exports.updateAvatar = (req, res, next) => User.findByIdAndUpdate(
         ),
       );
     } else {
-      next();
+      next(err);
     }
   });
