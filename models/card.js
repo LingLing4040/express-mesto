@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 const { ObjectId } = require('mongodb');
 
+// eslint-disable-next-line prefer-regex-literals
+const urlPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w.-]+)+[\\w\\-._~:/?#[\\]@!$&\'()*+,;=.]+$');
+
 const cardSchema = new mongoose.Schema(
   {
     name: {
@@ -12,6 +15,10 @@ const cardSchema = new mongoose.Schema(
     link: {
       type: String,
       required: true,
+      validate: {
+        validator: (v) => urlPattern.test(v),
+        message: 'Поле "avatar" должно быть валидным url-адресом.',
+      },
     },
     owner: {
       type: ObjectId,
