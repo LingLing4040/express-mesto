@@ -3,7 +3,7 @@ const codes = require('../utils/const');
 
 const handleAuthError = (res) => {
   res
-    .status(codes.UNAUTHORIZED)
+    .status(codes.UNAUTHORIZED_CODE)
     .send({ message: 'Необходима авторизация' });
 };
 

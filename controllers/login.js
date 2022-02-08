@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
+const UnauthorizedError = require('../errors/unauthorized-error');
 const User = require('../models/user');
-const codes = require('../utils/const');
 
-module.exports.login = (req, res) => {
+module.exports.login = (req, res, next) => {
   const { email, password } = req.body;
 
   return User.findUserByCredentials(email, password)
@@ -16,6 +16,12 @@ module.exports.login = (req, res) => {
       // });
     })
     .catch((err) => {
-      res.status(codes.UNAUTHORIZED_CODE).send({ message: err.message });
+      if (err.code === 401) {
+        next(
+          new UnauthorizedError('Неправильные почта или пароль'),
+        );
+      } else {
+        next(err);
+      }
     });
 };
