@@ -11,7 +11,11 @@ const {
 
 router.get('/users', getUsers);
 router.get('/users/me', getMe);
-router.get('/users/:userId', getUser);
+router.get('/users/:userId', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().hex().length(24).required(),
+  }),
+}), getUser);
 router.patch('/users/me', celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30).default('Жак-Ив Кусто'),
