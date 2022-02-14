@@ -3,6 +3,9 @@ const isEmail = require('validator/lib/isEmail');
 const bcrypt = require('bcryptjs');
 const UnauthorizedError = require('../errors/unauthorized-error');
 
+// eslint-disable-next-line prefer-regex-literals
+const urlPattern = new RegExp('^(?:http(s)?:\\/\\/)?[\\w.-]+(?:\\.[\\w.-]+)+[\\w\\-._~:/?#[\\]@!$&\'()*+,;=.]+$');
+
 const userSchema = new mongoose.Schema(
   {
     name: {
@@ -20,6 +23,10 @@ const userSchema = new mongoose.Schema(
     avatar: {
       type: String,
       default: 'https://pictures.s3.yandex.net/resources/jacques-cousteau_1604399756.png',
+      validate: {
+        validator: (v) => urlPattern.test(v),
+        message: 'Поле "avatar" должно быть валидным url-адресом.',
+      },
     },
     email: {
       type: String,
