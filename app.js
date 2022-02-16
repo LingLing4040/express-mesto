@@ -1,3 +1,4 @@
+require('dotenv').config();
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
@@ -10,7 +11,6 @@ const router = require('./routes');
 const { createUser } = require('./controllers/users');
 const { login } = require('./controllers/login');
 const auth = require('./middlewares/auth');
-require('dotenv').config();
 
 const method = (value) => {
   const result = validator.isURL(value);
