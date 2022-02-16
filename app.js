@@ -1,7 +1,7 @@
 require('dotenv').config();
-const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const validator = require('validator');
@@ -30,8 +30,8 @@ app.use(cors({
   credentials: true,
 }));
 
-app.use(cookieParser());
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', celebrate({
   body: Joi.object().keys({
