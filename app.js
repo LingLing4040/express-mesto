@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const validator = require('validator');
+const cors = require('cors');
 const errorHandler = require('./middlewares/error-handler');
 const router = require('./routes');
 const { createUser } = require('./controllers/users');
@@ -22,6 +23,10 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
+app.use(cors({
+  origin: 'http://cool.domainname.students.nomoredomains.xyz',
+  credentials: true,
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', celebrate({
@@ -38,9 +43,6 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 // app.use(cookieParser());
-// app.get('/posts', (req, res) => {
-//   console.log(req.cookies.jwt);
-// });
 app.use(auth);
 app.use(router);
 app.use(errors());
