@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const validator = require('validator');
-// const cors = require('cors');
+const cors = require('cors');
 const errorHandler = require('./middlewares/error-handler');
 const router = require('./routes');
 const { createUser } = require('./controllers/users');
@@ -24,11 +24,11 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-// app.use(cors({
-//   origin: 'http://cool.domainname.students.nomoredomains.xyz',
-//   // origin: 'http://localhost:3000',
-//   credentials: true,
-// }));
+app.use(cors({
+  origin: 'http://cool.domainname.students.nomoredomains.xyz',
+  // origin: 'http://localhost:3000',
+  credentials: true,
+}));
 
 app.use(bodyParser.json());
 app.use(cookieParser());
