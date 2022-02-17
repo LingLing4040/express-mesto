@@ -1,7 +1,8 @@
-const bodyParser = require('body-parser');
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-// const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const validator = require('validator');
 const cors = require('cors');
@@ -25,9 +26,12 @@ const app = express();
 
 app.use(cors({
   origin: 'http://cool.domainname.students.nomoredomains.xyz',
+  // origin: 'http://localhost:3000',
   credentials: true,
 }));
+
 app.use(bodyParser.json());
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.post('/signin', celebrate({
   body: Joi.object().keys({
@@ -42,7 +46,6 @@ app.post('/signup', celebrate({
     avatar: Joi.string().custom(method),
   }),
 }), createUser);
-// app.use(cookieParser());
 app.use(auth);
 app.use(router);
 app.use(errors());
