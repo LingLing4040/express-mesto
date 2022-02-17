@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const NotFoundError = require('../errors/not-found-error');
 const BadRequestError = require('../errors/bad-request-error');
+const UnauthorizedError = require('../errors/unauthorized-error');
 const codes = require('../utils/const');
 const ConflictError = require('../errors/conflict-error');
 
@@ -123,3 +125,25 @@ module.exports.updateAvatar = (req, res, next) => User.findByIdAndUpdate(
       next(err);
     }
   });
+
+module.exports.login = (req, res, next) => {
+  const { email, password } = req.body;
+
+  return User.findUserByCredentials(email, password)
+    .then((user) => {
+      const token = jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' });
+      res.cookie('token', token, {
+        maxAge: 3600000,
+        httpOnly: true,
+      }).end();
+    })
+    .catch((err) => {
+      if (err.code === codes.UNAUTHORIZED_CODE) {
+        next(
+          new UnauthorizedError('Неправильные почта или пароль'),
+        );
+      } else {
+        next(err);
+      }
+    });
+};

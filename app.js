@@ -70,7 +70,7 @@ const validator = require('validator');
 const errorHandler = require('./middlewares/error-handler');
 const router = require('./routes');
 const { createUser } = require('./controllers/users');
-const { login } = require('./controllers/login');
+const { login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
 
 const method = (value) => {
@@ -105,8 +105,8 @@ app.post('/signup', celebrate({
 //   console.log(req.cookies.jwt);
 // });
 app.use(auth);
-// app.use(router);
-// app.use(errors());
+app.use(router);
+app.use(errors());
 // app.use(errorHandler);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
