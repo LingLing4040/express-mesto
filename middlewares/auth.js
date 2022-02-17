@@ -2,7 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const UnauthorizedError = require('../errors/unauthorized-error');
 
-// eslint-disable-next-line consistent-return
 module.exports = (req, res, next) => {
   const { token } = req.cookies;
 
@@ -19,7 +18,7 @@ module.exports = (req, res, next) => {
         new UnauthorizedError('Требуется авторизация'),
       );
     } else {
-      next(new UnauthorizedError('Требуется авторизация!!'));
+      next(err);
     }
   }
   req.user = payload;
