@@ -61,8 +61,8 @@
 //   console.log(`App listening on port ${PORT}`);
 // });
 
-const bodyParser = require('body-parser');
 const express = require('express');
+const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
@@ -101,9 +101,6 @@ app.post('/signin', celebrate({
     password: Joi.string().required().min(8),
   }),
 }), login);
-// app.get('/posts', (req, res) => {
-//   console.log(req.cookies.jwt);
-// });
 app.use(auth);
 app.use(router);
 app.use(errors());
