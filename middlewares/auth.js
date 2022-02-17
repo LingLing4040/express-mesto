@@ -22,7 +22,7 @@ module.exports = (req, res, next) => {
         new UnauthorizedError('Требуется авторизация'),
       );
     } else {
-      next(err);
+      next(new UnauthorizedError('Требуется авторизация!!'));
     }
   }
   req.user = payload;

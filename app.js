@@ -107,7 +107,7 @@ app.post('/signup', celebrate({
 app.use(auth);
 // app.use(router);
 // app.use(errors());
-app.use(errorHandler);
+// app.use(errorHandler);
 
 mongoose.connect('mongodb://localhost:27017/mestodb', {
   useNewUrlParser: true,
