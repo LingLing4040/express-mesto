@@ -104,7 +104,7 @@ app.post('/signup', celebrate({
 // app.get('/posts', (req, res) => {
 //   console.log(req.cookies.jwt);
 // });
-// app.use(auth);
+app.use(auth);
 // app.use(router);
 // app.use(errors());
 app.use(errorHandler);
