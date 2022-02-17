@@ -62,6 +62,8 @@
 // });
 
 const express = require('express');
+
+const { PORT = 3000 } = process.env;
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
@@ -80,8 +82,6 @@ const router = require('./routes');
 //   }
 //   throw new Error('URL validation err');
 // };
-
-const { PORT = 3000 } = process.env;
 
 const app = express();
 
