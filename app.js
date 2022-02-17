@@ -63,8 +63,8 @@
 
 const bodyParser = require('body-parser');
 const express = require('express');
-const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
+const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
 const validator = require('validator');
 const errorHandler = require('./middlewares/error-handler');
@@ -85,9 +85,9 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
