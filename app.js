@@ -71,7 +71,7 @@ const errorHandler = require('./middlewares/error-handler');
 const router = require('./routes');
 const { createUser } = require('./controllers/users');
 const { login } = require('./controllers/users');
-const auth = require('./middlewares/auth');
+// const auth = require('./middlewares/auth');
 
 const method = (value) => {
   const result = validator.isURL(value);
@@ -101,7 +101,7 @@ app.post('/signin', celebrate({
     password: Joi.string().required().min(8),
   }),
 }), login);
-app.use(auth);
+// app.use(auth);
 app.use(router);
 app.use(errors());
 app.use(errorHandler);
