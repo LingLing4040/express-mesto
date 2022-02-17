@@ -64,7 +64,7 @@
 const bodyParser = require('body-parser');
 const express = require('express');
 const mongoose = require('mongoose');
-// const cookieParser = require('cookie-parser');
+const cookieParser = require('cookie-parser');
 const { celebrate, Joi, errors } = require('celebrate');
 const validator = require('validator');
 const errorHandler = require('./middlewares/error-handler');
@@ -87,6 +87,7 @@ const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.post('/signin', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -100,7 +101,6 @@ app.post('/signup', celebrate({
     avatar: Joi.string().custom(method),
   }),
 }), createUser);
-// app.use(cookieParser());
 // app.get('/posts', (req, res) => {
 //   console.log(req.cookies.jwt);
 // });
