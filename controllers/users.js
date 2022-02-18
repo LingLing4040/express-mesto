@@ -88,7 +88,7 @@ module.exports.updateProfile = (req, res, next) => User.findByIdAndUpdate(
   { new: true, runValidators: true },
 )
   .orFail(new NotFoundError(`Пользователь с id ${req.user._id} не найден`))
-  .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ data: user }))
+  .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ user }))
   .catch((err) => {
     if (err.name === 'ValidationError') {
       next(
@@ -111,7 +111,7 @@ module.exports.updateAvatar = (req, res, next) => User.findByIdAndUpdate(
   { new: true, runValidators: true },
 )
   .orFail(new NotFoundError(`Пользователь с id ${req.user._id} не найден`))
-  .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ data: user }))
+  .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ user }))
   .catch((err) => {
     if (err.name === 'ValidationError') {
       next(
