@@ -135,8 +135,8 @@ module.exports.login = (req, res, next) => {
       res.cookie('token', token, {
         maxAge: 3600000,
         httpOnly: true,
-        sameSite: true,
-      }).send(user);
+        sameSite: false,
+      }).send(user); //??
     })
     .catch((err) => {
       if (err.code === codes.UNAUTHORIZED_CODE) {
