@@ -67,7 +67,7 @@ const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const { celebrate, Joi, errors } = require('celebrate');
 const validator = require('validator');
-const cors = require('cors');
+const cors = require('./middlewares/cors');
 const errorHandler = require('./middlewares/error-handler');
 const router = require('./routes');
 const { createUser } = require('./controllers/users');
@@ -86,12 +86,13 @@ const { PORT = 3000 } = process.env;
 
 const app = express();
 
-app.use(cors({
-  origin: 'http://filatov.students.nomoredomains.work',
-  // origin: 'http://localhost:3000',
-  credentials: true,
-}));
-
+// app.use(cors({
+//   origin: 'http://filatov.students.nomoredomains.work',
+//   // origin: 'http://localhost:3000',
+//   credentials: true,
+// }));
+app.use(cors());
+app.options('*', cors());
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
