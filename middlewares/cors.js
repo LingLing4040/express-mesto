@@ -25,8 +25,8 @@
 
 const allowedCors = [
   'http://localhost:3000',
-  'http://filatov.students.nomoredomains.work',
-  'http://cool.domainname.students.nomoredomains.xyz',
+  'https://filatov.students.nomoredomains.work',
+  'https://cool.domainname.students.nomoredomains.xyz',
 ];
 
 const corsHandler = (req, res, next) => {
