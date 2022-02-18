@@ -9,7 +9,7 @@ module.exports.createCard = (req, res, next) => {
   const owner = req.user._id;
 
   return Card.create({ name, link, owner })
-    .then((card) => res.status(codes.SUCCESS_CREATED_CODE).send({ data: card }))
+    .then((card) => res.status(codes.SUCCESS_CREATED_CODE).send(card))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
@@ -26,7 +26,7 @@ module.exports.createCard = (req, res, next) => {
 };
 
 module.exports.getCards = (req, res, next) => Card.find({})
-  .then((cards) => res.status(codes.SUCCESS_OK_CODE).send({ data: cards }))
+  .then((cards) => res.status(codes.SUCCESS_OK_CODE).send(cards))
   .catch(next);
 
 module.exports.deleteCard = (req, res, next) => {
@@ -42,7 +42,7 @@ module.exports.deleteCard = (req, res, next) => {
       return card.remove;
     })
     .then((card) => {
-      res.status(codes.SUCCESS_OK_CODE).send({ data: card });
+      res.status(codes.SUCCESS_OK_CODE).send(card);
     })
     .catch((err) => {
       if (err.name === 'CastError') {
@@ -61,7 +61,7 @@ module.exports.likeCard = (req, res, next) => Card.findByIdAndUpdate(
   { new: true },
 )
   .orFail(new NotFoundError(`Карточка с id ${req.params.cardId} не найдена`))
-  .then((card) => res.status(codes.SUCCESS_OK_CODE).send({ data: card }))
+  .then((card) => res.status(codes.SUCCESS_OK_CODE).send(card))
   .catch((err) => {
     if (err.name === 'ValidationError') {
       next(
@@ -86,7 +86,7 @@ module.exports.dislikeCard = (req, res, next) => Card.findByIdAndUpdate(
   { new: true },
 )
   .orFail(new NotFoundError(`Карточка с id ${req.params.cardId} не найдена`))
-  .then((card) => res.status(codes.SUCCESS_OK_CODE).send({ data: card }))
+  .then((card) => res.status(codes.SUCCESS_OK_CODE).send(card))
   .catch((err) => {
     if (err.name === 'ValidationError') {
       next(
