@@ -135,7 +135,7 @@ module.exports.login = (req, res, next) => {
       res.cookie('token', token, {
         maxAge: 3600000,
         httpOnly: true,
-        sameSite: false,
+        sameSite: 'none',
       }).send(user); //??
     })
     .catch((err) => {
