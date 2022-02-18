@@ -5,7 +5,7 @@ const NotFoundError = require('../errors/not-found-error');
 
 const usersRouter = require('./users');
 const cardsRouter = require('./cards');
-const auth = require('../middlewares/auth');
+// const auth = require('../middlewares/auth');
 const { createUser } = require('../controllers/users');
 const { login } = require('../controllers/users');
 
@@ -31,8 +31,8 @@ router.post('/signin', celebrate({
   }),
 }), login);
 
-router.use('/', auth, usersRouter);
-router.use('/', auth, cardsRouter);
+router.use('/', usersRouter);
+router.use('/', cardsRouter);
 router.use((req, res, next) => {
   next(new NotFoundError('Маршрут не найден'));
 });
