@@ -42,7 +42,7 @@ module.exports.createUser = (req, res, next) => {
 };
 
 module.exports.getUsers = (req, res, next) => User.find({})
-  .then((users) => res.status(codes.SUCCESS_OK_CODE).send({ data: users }))
+  .then((users) => res.status(codes.SUCCESS_OK_CODE).send(users))
   .catch(next);
 
 module.exports.getUser = (req, res, next) => {
@@ -50,7 +50,7 @@ module.exports.getUser = (req, res, next) => {
 
   return User.findById(id)
     .orFail(new NotFoundError(`Пользователь с id ${id} не найден`))
-    .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ data: user }))
+    .then((user) => res.status(codes.SUCCESS_OK_CODE).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(
@@ -67,7 +67,7 @@ module.exports.getMe = (req, res, next) => {
 
   return User.findById(id)
     .orFail(new NotFoundError(`Пользователь с id ${id} не найден`))
-    .then((user) => res.status(codes.SUCCESS_OK_CODE).send({ data: user }))
+    .then((user) => res.status(codes.SUCCESS_OK_CODE).send(user))
     .catch((err) => {
       if (err.name === 'CastError') {
         next(
