@@ -30,16 +30,19 @@ module.exports.getCards = (req, res, next) => Card.find({})
   .catch(next);
 
 module.exports.deleteCard = (req, res, next) => {
+  console.log(req.user);
   const currentUser = req.user._id;
   const id = req.params.cardId;
 
   return Card.findById(id)
     .orFail(new NotFoundError(`Карточка с id ${id} не найдена`))
     .then((card) => {
+      // console.log('card');
       if (!card.owner.equals(currentUser)) {
         throw new ForbiddenError('Вы не можете удалите карточку другого пользователя');
       }
-      return card.remove;
+      // return card.remove;
+      Card.findByIdAndRemove(req.params.cardId);
     })
     .then((card) => {
       res.status(codes.SUCCESS_OK_CODE).send(card);
@@ -50,6 +53,7 @@ module.exports.deleteCard = (req, res, next) => {
           new BadRequestError('Невалидный id'),
         );
       } else {
+        // console.log('card');
         next(err);
       }
     });
