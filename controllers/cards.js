@@ -40,7 +40,7 @@ module.exports.deleteCard = (req, res, next) => {
       if (!card.owner.equals(currentUser)) {
         throw new ForbiddenError('Вы не можете удалите карточку другого пользователя');
       }
-      Card.findByIdAndRemove(req.params.cardId);
+      return Card.findByIdAndRemove(req.params.cardId).catch(next);
     })
     .then((card) => {
       res.status(codes.SUCCESS_OK_CODE).send({ data: card });
