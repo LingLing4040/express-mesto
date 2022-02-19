@@ -3,6 +3,7 @@ const router = require('express').Router();
 // const validator = require('validator');
 const NotFoundError = require('../errors/not-found-error');
 
+// const { logout } = require('./users');
 const usersRouter = require('./users');
 const cardsRouter = require('./cards');
 // const auth = require('../middlewares/auth');
@@ -33,6 +34,7 @@ const cardsRouter = require('./cards');
 
 router.use('/', usersRouter);
 router.use('/', cardsRouter);
+// router.get('/signout', logout);
 router.use((req, res, next) => {
   next(new NotFoundError('Маршрут не найден'));
 });
