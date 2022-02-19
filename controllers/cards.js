@@ -45,7 +45,7 @@ module.exports.deleteCard = (req, res, next) => {
       Card.findByIdAndRemove(req.params.cardId);
     })
     .then((card) => {
-      res.status(codes.SUCCESS_OK_CODE).send(card);
+      res.status(codes.SUCCESS_OK_CODE).send({ data: card });
     })
     .catch((err) => {
       if (err.name === 'CastError') {
