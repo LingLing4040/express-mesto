@@ -1,6 +1,9 @@
+require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
 const UnauthorizedError = require('../errors/unauthorized-error');
+
+const { NODE_ENV, JWT_SECRET } = process.env;
 
 module.exports = (req, res, next) => {
   const { token } = req.cookies;
@@ -9,7 +12,7 @@ module.exports = (req, res, next) => {
 
   let payload;
   try {
-    payload = jwt.verify(token, 'some-secret-key');
+    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : 'jwtsecret');
   } catch (err) {
     if (err.name === 'JsonWebTokenError') {
       next(
@@ -23,7 +26,6 @@ module.exports = (req, res, next) => {
   next();
 };
 
-// require('dotenv').config();
 // const jwt = require('jsonwebtoken');
 // const UnauthorizedError = require('../errors/unauthorized-error');
 

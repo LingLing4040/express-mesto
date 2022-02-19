@@ -60,7 +60,9 @@
 // app.listen(PORT, () => {
 //   console.log(`App listening on port ${PORT}`);
 // });
+// app.js
 
+require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -73,6 +75,7 @@ const router = require('./routes');
 const { createUser } = require('./controllers/users');
 const { login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
+const { requestLogger, errorLogger } = require('./middlewares/logger');
 
 const method = (value) => {
   const result = validator.isURL(value);
@@ -96,6 +99,14 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(corsHandler);
+app.use(requestLogger);
+
+app.get('/crash-test', () => {
+  setTimeout(() => {
+    throw new Error('Сервер сейчас упадёт');
+  }, 0);
+});
+
 app.post('/signup', celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().email(),
@@ -111,6 +122,7 @@ app.post('/signin', celebrate({
 }), login);
 app.use(auth);
 app.use(router);
+app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
 
