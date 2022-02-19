@@ -152,17 +152,3 @@ module.exports.login = (req, res, next) => {
       }
     });
 };
-
-// module.exports.logout = (_req, res, next) => {
-//   try {
-//     res.cookie('token', '', {
-//       maxAge: -1,
-//       httpOnly: true,
-//       sameSite: 'none',
-//       secure: true,
-//     })
-//       .send({ message: 'Logged out' });
-//   } catch (err) {
-//     next(err);
-//   }
-// };

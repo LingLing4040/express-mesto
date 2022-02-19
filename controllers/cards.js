@@ -37,11 +37,9 @@ module.exports.deleteCard = (req, res, next) => {
   return Card.findById(id)
     .orFail(new NotFoundError(`Карточка с id ${id} не найдена`))
     .then((card) => {
-      // console.log('card');
       if (!card.owner.equals(currentUser)) {
         throw new ForbiddenError('Вы не можете удалите карточку другого пользователя');
       }
-      // return card.remove;
       Card.findByIdAndRemove(req.params.cardId);
     })
     .then((card) => {
@@ -53,7 +51,6 @@ module.exports.deleteCard = (req, res, next) => {
           new BadRequestError('Невалидный id'),
         );
       } else {
-        // console.log('card');
         next(err);
       }
     });
